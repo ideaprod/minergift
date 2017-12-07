@@ -38,4 +38,4 @@ FORMS += \
     mainwindow.ui
 
 LIBS += \
-    -lminergift
+    -L$$PWD/../output/ -lminergift

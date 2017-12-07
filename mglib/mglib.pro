@@ -32,4 +32,4 @@ HEADERS += \
 
 #message("EMILIEN $$OUT_PWD")
 
-QMAKE_POST_LINK += mkdir $${PROJECT_OUTPUT} && cp libminergift.so $${PROJECT_OUTPUT}
+QMAKE_POST_LINK += if [ ! -d $${PROJECT_OUTPUT} ];then mkdir $${PROJECT_OUTPUT} ;fi && cp libminergift.so $${PROJECT_OUTPUT} && ln -fs $${PROJECT_OUTPUT}/libminergift.so $${PROJECT_OUTPUT}/libminergift.so.1
