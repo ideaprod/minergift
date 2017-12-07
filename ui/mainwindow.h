@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include "constants.h"
+#include "minerapi.h"
 
 namespace Ui {
 class MainWindow;

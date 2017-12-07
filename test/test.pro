@@ -1,15 +1,11 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2017-10-02T13:41:29
-#
-#-------------------------------------------------
 
-QT       += core gui
+
+QT       += core
 QT       += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = MinerGift
+TARGET = testminergift
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -23,16 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
 SOURCES += \
-        src/main.cpp \
-        src/mainwindow.cpp \
-       # test/main.cpp
+        main.cpp
 
-HEADERS += \
-        src/mainwindow.h \
-        src/constants.h \
-        src/minerapi.h
 
-FORMS += \
-        src/mainwindow.ui
