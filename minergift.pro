@@ -8,5 +8,5 @@ SUBDIRS += mglib
 test.depends = mglib
 ui.depends = mglib
 
-#SUBDIRS += test
+SUBDIRS += test
 SUBDIRS += ui

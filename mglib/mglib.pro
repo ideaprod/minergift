@@ -1,6 +1,6 @@
  
 TEMPLATE = lib
-TARGET = libminergift
+TARGET = minergift
 
 QT += core
 
