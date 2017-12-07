@@ -27,7 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         src/main.cpp \
         src/mainwindow.cpp \
-        test/main.cpp
+       # test/main.cpp
 
 HEADERS += \
         src/mainwindow.h \
@@ -35,4 +35,4 @@ HEADERS += \
         src/minerapi.h
 
 FORMS += \
-        mainwindow.ui
+        src/mainwindow.ui
