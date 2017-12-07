@@ -2,11 +2,6 @@
 
 #include "XmrigConnector.h"
 
-//XmrigConnector::XmrigConnector()
-//{
-//    qDebug() << "XmrigConnector constructeur";
-//}
-
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";

@@ -6,7 +6,10 @@
 class XmrigConnector : public MinerApi
 {
 public:
-   // XmrigConnector();
+    XmrigConnector(QObject *parent = 0) : MinerApi(parent)
+    {
+        qDebug() << "XmrigConnector construct";
+    }
 
     int start();
     int stop();
@@ -19,7 +22,8 @@ public:
 
     QString getStatus();
     QString getHostInfo();
-    QString getHashRate();
+    QString getHashRate();    
+
 };
 
 #endif // XMRIGCONNECTOR_H

@@ -36,3 +36,6 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
+
+LIBS += \
+    -lminergift

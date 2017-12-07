@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //ToDo : dynamically load connectors instead of instanciate them
+    this->xmc = new XmrigConnector();
     this->start();
 }
 
@@ -31,11 +34,13 @@ void MainWindow::on_buttonStartStop_pressed()
 void MainWindow::start()
 {
     qDebug() << "Starting...";
+    this->xmc->start();
     started = true;
 }
 
 void MainWindow::stop()
 {
     qDebug() << "Stoping...";
+    this->xmc->stop();
     started = false;
 }
