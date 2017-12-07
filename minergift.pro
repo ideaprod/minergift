@@ -3,10 +3,10 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 
-SUBDIRS += lib
+SUBDIRS += mglib
 
-test.depends = lib
-ui.depends = lib
+test.depends = mglib
+ui.depends = mglib
 
 #SUBDIRS += test
 SUBDIRS += ui
