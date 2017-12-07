@@ -1,7 +1,7 @@
 #include <QtTest>
 #include <QCoreApplication>
 
-// add necessary includes here
+#include "minerapi.h"
 
 class XmrigConnectorTest : public QObject
 {
@@ -14,8 +14,8 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_case1();
-
+    void test_start_ok();
+    void test_start_ko();
 };
 
 XmrigConnectorTest::XmrigConnectorTest()
@@ -38,10 +38,16 @@ void XmrigConnectorTest::cleanupTestCase()
 
 }
 
-void XmrigConnectorTest::test_case1()
+void XmrigConnectorTest::test_start_ok()
 {
-
+    qDebug() << "test_start_ok";
 }
+
+void XmrigConnectorTest::test_start_ko()
+{
+    qDebug() << "test_start_ko";
+}
+
 
 QTEST_MAIN(XmrigConnectorTest)
 

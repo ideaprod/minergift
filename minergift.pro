@@ -1,7 +1,9 @@
- 
+include(minergift.pri)
+
 TEMPLATE = subdirs
 CONFIG += ordered
 
+OUTPUT_DIR = $$PWD/output
 
 SUBDIRS += mglib
 
