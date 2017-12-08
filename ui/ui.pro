@@ -1,17 +1,11 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2017-10-02T13:41:29
-#
-#-------------------------------------------------
+include(../minergift.pri)
 
-QT       += core gui
-QT       += testlib
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
 TARGET = uiminergift
-
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -26,6 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += ../mglib
 
+LIBS += -L$$PROJECT_OUTPUT/ -lminergift
+
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
@@ -34,8 +30,6 @@ HEADERS += \
     mainwindow.h \
     constants.h \
 
-FORMS += \
-    mainwindow.ui
+FORMS += mainwindow.ui
 
-LIBS += \
-    -L$$PWD/../output/ -lminergift
+QMAKE_POST_LINK += $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT}

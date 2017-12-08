@@ -8,7 +8,7 @@ class MinerApi : public QObject
 {
     Q_OBJECT
 public:
-    explicit MinerApi(QObject *parent = 0) {}
+    explicit MinerApi(QObject *parent = 0) { Q_UNUSED(parent) }
     virtual ~MinerApi() {}
     virtual int start() = 0;
     virtual int stop() = 0;

@@ -23,13 +23,4 @@ HEADERS += \
     minerapi.h \
     XmrigConnector/XmrigConnector.h
 
-#HEADERS_PUBLIC += \
-#    minerapi.h
-
-#target.path = $${PROJECT_OUTPUT}
-#headerspub.files = $$HEADERS_PUBLIC
-#headerspub.path = $${PROJECT_OUTPUT}
-
-#message("EMILIEN $$OUT_PWD")
-
-QMAKE_POST_LINK += if [ ! -d $${PROJECT_OUTPUT} ];then mkdir $${PROJECT_OUTPUT} ;fi && cp libminergift.so $${PROJECT_OUTPUT} && ln -fs $${PROJECT_OUTPUT}/libminergift.so $${PROJECT_OUTPUT}/libminergift.so.1
+QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* $${PROJECT_OUTPUT}
