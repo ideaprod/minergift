@@ -6,6 +6,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
 TARGET = uiminergift
+CONF = miner.json
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -25,11 +26,15 @@ LIBS += -L$$PROJECT_OUTPUT/ -lminergift
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    conf.cpp
 
 HEADERS += \
     mainwindow.h \
     constants.h \
+    conf.h
 
 FORMS += mainwindow.ui
 
-QMAKE_POST_LINK += $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT}
+QMAKE_POST_LINK += $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT} ;
+
+QMAKE_POST_LINK += $$QMAKE_COPY $$PWD/$$CONF $${PROJECT_OUTPUT}

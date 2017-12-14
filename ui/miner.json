@@ -1,0 +1,6 @@
+{
+  "miner": {
+    "description": "SomeDescription",
+    "message": "SomeMessage"
+  }
+}

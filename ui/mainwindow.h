@@ -6,6 +6,7 @@
 #include "constants.h"
 #include "minerapi.h"
 #include "XmrigConnector/XmrigConnector.h"
+#include "conf.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,7 @@ private:
     void start();
     void stop();
     XmrigConnector *xmc;
+    Conf *conf;
 };
 
 #endif // MAINWINDOW_H
