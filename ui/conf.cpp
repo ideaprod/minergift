@@ -22,8 +22,7 @@ QString Conf::loadFile(QString fileName)
         result = this->confFile.readAll();
         this->confFile.close();
     }
-    else
-    {
+    else {
         qDebug() << "Could not open file: " << this->fileName;
         this->loadDefaultConf();
     }
@@ -32,17 +31,16 @@ QString Conf::loadFile(QString fileName)
 
 void Conf::readConfFromFile(QString result)
 {
-    qDebug() << "Reading: " << result.toUtf8();
-    QJsonDocument confJson = QJsonDocument::fromJson(result.toUtf8());
-    if (!confJson.isNull())
-    {
+    qDebug() << "Reading:" << result.toUtf8();
+    QJsonParseError parseError;
+    QJsonDocument confJson = QJsonDocument::fromJson(result.toUtf8(), &parseError);
+    if (parseError.error == QJsonParseError::NoError) {
         QJsonObject sett2 = confJson.object();
         QJsonValue value = sett2.value(QString("miner"));
         this->minerJson = value.toObject();
     }
-    else
-    {
-        qDebug() << "Could not parse: " << this->fileName;
+    else {
+        qDebug() << "Could not parse:" << this->fileName << "because" << parseError.errorString();
         this->loadDefaultConf();
     }
 }

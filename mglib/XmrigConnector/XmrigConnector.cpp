@@ -9,12 +9,12 @@ XmrigConnector::XmrigConnector(QObject *parent)
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";
-    QString program = "/home/tsaquet/dev/xmrig/build/xmrig";
+    QString program = "./xmrig";
     QStringList arguments;
     arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k";
     qDebug() << "args: " << arguments;
 
-    QProcess *myProcess = new QProcess();
+    myProcess = new QProcess();
     myProcess->start(program, arguments);
     return 1;
 }
@@ -22,6 +22,7 @@ int XmrigConnector::start()
 int XmrigConnector::stop()
 {
     qDebug() << "XmrigConnector stop";
+    myProcess->kill();
     return 1;
 }
 

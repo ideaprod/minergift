@@ -32,6 +32,7 @@ public:
 
 private:
     QString userName;
+    QProcess *myProcess;
 };
 
 #endif // XMRIGCONNECTOR_H
