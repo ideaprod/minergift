@@ -28,12 +28,12 @@ int XmrigConnector::stop()
 
 int XmrigConnector::getCpuUsage()
 {
-    return 1;
+    return this->cpuUsage;
 }
 
 void XmrigConnector::setCpuUsage(int cpuUsage)
 {
-    Q_UNUSED(cpuUsage);
+    this->cpuUsage = cpuUsage;
 }
 
 int XmrigConnector::getCpuPriority()

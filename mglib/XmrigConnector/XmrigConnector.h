@@ -32,6 +32,8 @@ public:
 
 private:
     QString userName;
+    int cpuUsage;
+
     QProcess *myProcess;
 };
 

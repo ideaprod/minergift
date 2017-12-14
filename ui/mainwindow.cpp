@@ -47,6 +47,16 @@ void MainWindow::on_buttonStartStop_pressed()
     }
 }
 
+void MainWindow::on_sliderRate_valueChanged()
+{
+    qDebug() << "Slider value changed:" << ui->sliderRate->value();
+}
+
+void MainWindow::on_sliderRate_sliderMoved()
+{
+    qDebug() << "Slider moved";
+}
+
 void MainWindow::start()
 {
     qDebug() << "Starting...";

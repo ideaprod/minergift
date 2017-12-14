@@ -22,6 +22,8 @@ public:
 
 private slots:
     void on_buttonStartStop_pressed();
+    void on_sliderRate_valueChanged();
+    void on_sliderRate_sliderMoved();
 
 private:
     Ui::MainWindow *ui;
