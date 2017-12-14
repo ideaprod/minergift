@@ -18,12 +18,18 @@ public:
     virtual ~MinerApi() {}
     virtual int start() = 0;
     virtual int stop() = 0;
-    virtual void setCpuUsage() = 0;
-    virtual void setCpuPriority() = 0;
-    virtual void setCpuAffinity() = 0;
-    virtual void setServer() = 0;
-    virtual void setUserName() = 0;
-    virtual void setCpuThreadNumber() = 0;
+    virtual int getCpuUsage() = 0;
+    virtual void setCpuUsage(int cpuUsage) = 0;
+    virtual int getCpuPriority() = 0;
+    virtual void setCpuPriority(int cpuPriority) = 0;
+    virtual int getCpuAffinity() = 0;
+    virtual void setCpuAffinity(int cpuAffinity) = 0;
+    virtual int getCpuThreadNumber() = 0;
+    virtual void setCpuThreadNumber(int cpuThreadNumber) = 0;
+    virtual QString getServer() = 0;
+    virtual void setServer(QString server) = 0;
+    virtual QString getUserName() = 0;
+    virtual void setUserName(QString userName) = 0;
 
     virtual MinerStatus getStatus() = 0;
     virtual QString getHostInfo() = 0;

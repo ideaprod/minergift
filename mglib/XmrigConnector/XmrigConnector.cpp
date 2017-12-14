@@ -2,6 +2,12 @@
 
 #include "XmrigConnector.h"
 
+XmrigConnector::XmrigConnector(QObject *parent)
+  : MinerApi(parent)
+{
+    qDebug() << "XmrigConnector construct";
+}
+
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";
@@ -14,34 +20,64 @@ int XmrigConnector::stop()
     return 1;
 }
 
-void XmrigConnector::setCpuUsage()
+int XmrigConnector::getCpuUsage()
 {
-
+    return 1;
 }
 
-void XmrigConnector::setCpuPriority()
+void XmrigConnector::setCpuUsage(int cpuUsage)
 {
-
+    Q_UNUSED(cpuUsage);
 }
 
-void XmrigConnector::setCpuAffinity()
+int XmrigConnector::getCpuPriority()
 {
-
+    return 1;
 }
 
-void XmrigConnector::setServer()
+void XmrigConnector::setCpuPriority(int cpuPriority)
 {
-
+    Q_UNUSED(cpuPriority);
 }
 
-void XmrigConnector::setUserName()
+int XmrigConnector::getCpuAffinity()
 {
-
+    return 1;
 }
 
-void XmrigConnector::setCpuThreadNumber()
+void XmrigConnector::setCpuAffinity(int cpuAffinity)
 {
+    Q_UNUSED(cpuAffinity);
+}
 
+int XmrigConnector::getCpuThreadNumber()
+{
+    return 1;
+}
+
+void XmrigConnector::setCpuThreadNumber(int cpuThreadNumber)
+{
+    Q_UNUSED(cpuThreadNumber);
+}
+
+QString XmrigConnector::getServer()
+{
+    return "server";
+}
+
+void XmrigConnector::setServer(QString server)
+{
+    Q_UNUSED(server);
+}
+
+QString XmrigConnector::getUserName()
+{
+    return "userName";
+}
+
+void XmrigConnector::setUserName(QString userName)
+{
+    Q_UNUSED(userName);
 }
 
 MinerApi::MinerStatus XmrigConnector::getStatus()
@@ -51,10 +87,10 @@ MinerApi::MinerStatus XmrigConnector::getStatus()
 
 QString XmrigConnector::getHostInfo()
 {
-    return "";
+    return "hostInfo";
 }
 
 QString XmrigConnector::getHashRate()
 {
-    return "";
+    return "hashRate";
 }

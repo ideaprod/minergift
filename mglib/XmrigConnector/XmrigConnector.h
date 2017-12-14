@@ -6,24 +6,26 @@
 class XmrigConnector : public MinerApi
 {
 public:
-    XmrigConnector(QObject *parent = 0) : MinerApi(parent)
-    {
-        qDebug() << "XmrigConnector construct";
-    }
+    XmrigConnector(QObject *parent = 0);
 
     int start();
     int stop();
-    void setCpuUsage();
-    void setCpuPriority();
-    void setCpuAffinity();
-    void setServer();
-    void setUserName();
-    void setCpuThreadNumber();
+    int getCpuUsage();
+    void setCpuUsage(int cpuUsage);
+    int getCpuPriority();
+    void setCpuPriority(int cpuPriority);
+    int getCpuAffinity();
+    void setCpuAffinity(int cpuAffinity);
+    int getCpuThreadNumber();
+    void setCpuThreadNumber(int cpuThreadNumber);
+    QString getServer();
+    void setServer(QString server);
+    QString getUserName();
+    void setUserName(QString userName);
 
     MinerStatus getStatus();
     QString getHostInfo();
     QString getHashRate();    
-
 };
 
 #endif // XMRIGCONNECTOR_H
