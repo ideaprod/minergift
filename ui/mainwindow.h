@@ -30,6 +30,9 @@ private:
     void stop();
     XmrigConnector *xmc;
     Conf *conf;
+    void initConnectors();
+    void initConf();
+    void initUi();
 };
 
 #endif // MAINWINDOW_H
