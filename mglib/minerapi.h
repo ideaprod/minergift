@@ -8,6 +8,12 @@ class MinerApi : public QObject
 {
     Q_OBJECT
 public:
+    enum MinerStatus {
+      STARTED,
+      STOPPED
+    };
+    Q_ENUM(MinerStatus)
+
     explicit MinerApi(QObject *parent = 0) { Q_UNUSED(parent) }
     virtual ~MinerApi() {}
     virtual int start() = 0;
@@ -19,10 +25,9 @@ public:
     virtual void setUserName() = 0;
     virtual void setCpuThreadNumber() = 0;
 
-    virtual QString getStatus() = 0;
+    virtual MinerStatus getStatus() = 0;
     virtual QString getHostInfo() = 0;
     virtual QString getHashRate() = 0;
-
 
 signals:
 

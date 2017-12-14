@@ -20,7 +20,7 @@ public:
     void setUserName();
     void setCpuThreadNumber();
 
-    QString getStatus();
+    MinerStatus getStatus();
     QString getHostInfo();
     QString getHashRate();    
 

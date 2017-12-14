@@ -1,7 +1,7 @@
 #include <QtTest>
 #include <QCoreApplication>
 
-#include "minerapi.h"
+#include "XmrigConnector/XmrigConnector.h"
 
 class XmrigConnectorTest : public QObject
 {
@@ -11,43 +11,107 @@ public:
     XmrigConnectorTest();
     ~XmrigConnectorTest();
 
+private:
+    XmrigConnector *xmc;
+
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_start_ok();
-    void test_start_ko();
+    void init();
+    void cleanup();
+    void test_start_initialStartOk();
+    void test_start_secondStartKo();
+    void test_stop_initialStopOk();
+    void test_stop_stopAfterStartOk();
+    void test_stop_secondStopOk();
+    void test_getStatus_initial();
+    void test_getStatus_started();
+    void test_getStatus_stopped();
 };
 
 XmrigConnectorTest::XmrigConnectorTest()
 {
-
 }
 
 XmrigConnectorTest::~XmrigConnectorTest()
 {
-
 }
 
 void XmrigConnectorTest::initTestCase()
 {
-
+    // will be called before the first test function is executed.
 }
 
 void XmrigConnectorTest::cleanupTestCase()
 {
-
+    // will be called after the last test function was executed.
 }
 
-void XmrigConnectorTest::test_start_ok()
+void XmrigConnectorTest::init()
 {
-    qDebug() << "test_start_ok";
+    // will be called before each test function is executed.
+    xmc = new XmrigConnector();
 }
 
-void XmrigConnectorTest::test_start_ko()
+void XmrigConnectorTest::cleanup()
 {
-    qDebug() << "test_start_ko";
+    // will be called after every test function.
+    xmc->deleteLater();
 }
 
+void XmrigConnectorTest::test_start_initialStartOk()
+{
+    qDebug() << "test_start_firstStartOk";
+    QCOMPARE(xmc->start(), 1);
+}
+
+void XmrigConnectorTest::test_start_secondStartKo()
+{
+    qDebug() << "test_start_secondStartKo";
+    QCOMPARE(xmc->start(), 1);
+    QCOMPARE(xmc->start(), 0);
+}
+
+void XmrigConnectorTest::test_stop_initialStopOk()
+{
+    qDebug() << "test_stop_initialStopOk";
+    QCOMPARE(xmc->stop(), 1);
+}
+
+void XmrigConnectorTest::test_stop_stopAfterStartOk()
+{
+    qDebug() << "test_stop_firstStopOk";
+    QCOMPARE(xmc->start(), 1);
+    QCOMPARE(xmc->stop(), 1);
+}
+
+void XmrigConnectorTest::test_stop_secondStopOk()
+{
+    qDebug() << "test_stop_secondStopOk";
+    QCOMPARE(xmc->start(), 1);
+    QCOMPARE(xmc->stop(), 1);
+    QCOMPARE(xmc->stop(), 1);
+}
+
+void XmrigConnectorTest::test_getStatus_initial()
+{
+    qDebug() << "test_getStatus_initial";
+    QCOMPARE(xmc->getStatus(), MinerApi::MinerStatus::STOPPED);
+}
+
+void XmrigConnectorTest::test_getStatus_started()
+{
+    qDebug() << "test_getStatus_started";
+    QCOMPARE(xmc->start(), 1);
+    QCOMPARE(xmc->getStatus(), MinerApi::MinerStatus::STARTED);
+}
+
+void XmrigConnectorTest::test_getStatus_stopped()
+{
+    qDebug() << "test_getStatus_stopped";
+    QCOMPARE(xmc->stop(), 1);
+    QCOMPARE(xmc->getStatus(), MinerApi::MinerStatus::STOPPED);
+}
 
 QTEST_MAIN(XmrigConnectorTest)
 

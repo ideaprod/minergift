@@ -44,9 +44,9 @@ void XmrigConnector::setCpuThreadNumber()
 
 }
 
-QString XmrigConnector::getStatus()
+MinerApi::MinerStatus XmrigConnector::getStatus()
 {
-    return "";
+    return MinerStatus::STOPPED;
 }
 
 QString XmrigConnector::getHostInfo()
