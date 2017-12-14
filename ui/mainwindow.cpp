@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    conf = new Conf();
+    conf = new Conf("./miner.json");
     ui->setupUi(this);
 
     //ToDo : dynamically load connectors instead of instanciate them

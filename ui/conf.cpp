@@ -1,9 +1,9 @@
 #include "conf.h"
 
 
-Conf::Conf()
+Conf::Conf(QString fileName)
 {
-    this->fileName= "./miner2.json";
+    this->fileName = fileName;
     this->initConf(this->fileName);
 }
 
@@ -24,6 +24,7 @@ void Conf::loadFile(QString result, QString fileName)
     else
     {
         qDebug() << "Could not open file: " << this->fileName;
+        this->loadDefaultConf();
     }
 }
 
@@ -39,7 +40,13 @@ void Conf::readConfFromFile(QString result)
     else
     {
         qDebug() << "Could not parse: " << this->fileName;
+        this->loadDefaultConf();
     }
+}
+
+void Conf::loadDefaultConf()
+{
+    qDebug() << "ToDo";
 }
 
 QString Conf::value(QString key)
