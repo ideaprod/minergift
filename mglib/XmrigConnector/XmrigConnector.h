@@ -8,8 +8,11 @@
 
 class XmrigConnector : public MinerApi
 {
+
+Q_OBJECT
+
 public:
-    XmrigConnector(QObject *parent = 0);
+    XmrigConnector(MinerApi *parent = 0);
 
     int start();
     int stop();
@@ -35,6 +38,10 @@ private:
     int cpuUsage;
 
     QProcess *myProcess;
+
+private slots:
+
+    void displayProcessOutput();
 };
 
 #endif // XMRIGCONNECTOR_H

@@ -47,20 +47,28 @@ void MainWindow::on_buttonStartStop_pressed()
     }
 }
 
+void MainWindow::onSliderChange()
+{
+    this->xmc->setCpuUsage(ui->sliderRate->value());
+}
+
 void MainWindow::on_sliderRate_valueChanged()
 {
     qDebug() << "Slider value changed:" << ui->sliderRate->value();
+    onSliderChange();
 }
 
 void MainWindow::on_sliderRate_sliderMoved()
 {
     qDebug() << "Slider moved";
+    onSliderChange();
 }
 
 void MainWindow::start()
 {
     qDebug() << "Starting...";
     this->xmc->start();
+    ui->sliderRate->setEnabled(false);
     started = true;
 }
 
@@ -68,5 +76,6 @@ void MainWindow::stop()
 {
     qDebug() << "Stoping...";
     this->xmc->stop();
+    ui->sliderRate->setEnabled(true);
     started = false;
 }

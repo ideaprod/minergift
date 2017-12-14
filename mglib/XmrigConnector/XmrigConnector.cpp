@@ -1,9 +1,11 @@
 #include "XmrigConnector.h"
 
-XmrigConnector::XmrigConnector(QObject *parent)
+XmrigConnector::XmrigConnector(MinerApi *parent)
   : MinerApi(parent)
 {
     qDebug() << "XmrigConnector construct";
+    this->setCpuUsage(10);
+
 }
 
 int XmrigConnector::start()
@@ -11,11 +13,20 @@ int XmrigConnector::start()
     qDebug() << "XmrigConnector start";
     QString program = "./xmrig";
     QStringList arguments;
-    arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k";
+    arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
+              << "--no-color"
+              << "--threads=1"
+              << "--av=0"
+              << "--max-cpu-usage=" + QString::number(this->getCpuUsage())
+              << "--cpu-priority" << "1";
     qDebug() << "args: " << arguments;
 
     myProcess = new QProcess();
+    myProcess->setReadChannelMode(QProcess::MergedChannels);
     myProcess->start(program, arguments);
+
+    QObject::connect(myProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+
     return 1;
 }
 
@@ -24,6 +35,11 @@ int XmrigConnector::stop()
     qDebug() << "XmrigConnector stop";
     myProcess->kill();
     return 1;
+}
+
+void XmrigConnector::displayProcessOutput()
+{
+    qDebug() << myProcess->readAllStandardOutput();
 }
 
 int XmrigConnector::getCpuUsage()

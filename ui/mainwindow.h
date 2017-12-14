@@ -20,6 +20,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    void onSliderChange();
+
 private slots:
     void on_buttonStartStop_pressed();
     void on_sliderRate_valueChanged();
