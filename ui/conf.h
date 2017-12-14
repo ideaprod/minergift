@@ -18,7 +18,7 @@ private:
     QJsonObject minerJson;
 
     void initConf(QString fileName);
-    void loadFile(QString result, QString fileName);
+    QString loadFile(QString fileName);
     void loadDefaultConf();
     void readConfFromFile(QString result);
 };

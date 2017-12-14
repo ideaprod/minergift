@@ -1,6 +1,9 @@
 #ifndef XMRIGCONNECTOR_H
 #define XMRIGCONNECTOR_H
 
+#include <QDebug>
+#include <QProcess>
+
 #include "minerapi.h"
 
 class XmrigConnector : public MinerApi
@@ -26,6 +29,9 @@ public:
     MinerStatus getStatus();
     QString getHostInfo();
     QString getHashRate();    
+
+private:
+    QString userName;
 };
 
 #endif // XMRIGCONNECTOR_H

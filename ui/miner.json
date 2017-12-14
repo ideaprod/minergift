@@ -1,6 +1,5 @@
 {
   "miner": {
-    "description": "SomeDescription",
-    "message": "SomeMessage"
+    "username": $ToBeDefined
   }
 }
