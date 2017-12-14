@@ -7,7 +7,11 @@ CONFIG += qt warn_on depend_includepath testcase
 TEMPLATE = app
 TARGET = testminergift
 
-INCLUDEPATH += ../mglib
+INCLUDEPATH += ../mglib ../ui
+DEPENDPATH += $${INCLUDEPATH} # force rebuild if the headers change
+
+LIBS += $${_UI_LIB}
+PRE_TARGETDEPS += $${_UI_LIB}
 
 LIBS += -L$$PROJECT_OUTPUT/ -lminergift
 

@@ -6,19 +6,32 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    conf = new Conf();
-    ui->setupUi(this);
-
-    //ToDo : dynamically load connectors instead of instanciate them
-    this->xmc = new XmrigConnector();
+    initConf();
+    initUi();
+    initConnectors();
     this->start();
-
-    qDebug() << "description: " << conf->value("description");
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initConf()
+{
+    this->conf = new Conf("./miner.json");
+}
+
+void MainWindow::initUi()
+{
+    ui->setupUi(this);
+}
+
+void MainWindow::initConnectors()
+{
+    //ToDo : dynamically load connectors instead of instanciate them
+    this->xmc = new XmrigConnector();
+    this->xmc->setUserName(conf->value("username"));
 }
 
 void MainWindow::on_buttonStartStop_pressed()

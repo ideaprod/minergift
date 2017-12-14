@@ -10,15 +10,17 @@
 class Conf
 {
 public:
-    Conf();
+    Conf(QString fileName);
     QString value(QString key);
 private:
     QString fileName;
     QFile confFile;
     QJsonObject minerJson;
 
-    void initConf(QString fileName = 0);
-    void loadFile(QString result, QString fileName);
+    void initConf(QString fileName);
+    QString loadFile(QString fileName);
+    void loadDefaultConf();
+    void readConfFromFile(QString result);
 };
 
 #endif // CONF_H

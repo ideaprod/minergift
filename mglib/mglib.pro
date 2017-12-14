@@ -23,4 +23,6 @@ HEADERS += \
     minerapi.h \
     XmrigConnector/XmrigConnector.h
 
-QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* $${PROJECT_OUTPUT}
+QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig
+
+QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* xmrig/xmrig $${PROJECT_OUTPUT}

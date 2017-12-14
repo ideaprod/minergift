@@ -1,21 +1,22 @@
 #include "conf.h"
 
 
-Conf::Conf()
+Conf::Conf(QString fileName)
 {
-    this->fileName= "./miner2.json";
+    this->fileName = fileName;
     this->initConf(this->fileName);
 }
 
 void Conf::initConf(QString fileName)
 {
     QString result;
-    loadFile(result, fileName);
+    result = loadFile(fileName);
     readConfFromFile(result);
 }
 
-void Conf::loadFile(QString result, QString fileName)
+QString Conf::loadFile(QString fileName)
 {
+    QString result;
     this->confFile.setFileName(fileName);
     if(this->confFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         result = this->confFile.readAll();
@@ -24,11 +25,14 @@ void Conf::loadFile(QString result, QString fileName)
     else
     {
         qDebug() << "Could not open file: " << this->fileName;
+        this->loadDefaultConf();
     }
+    return result;
 }
 
 void Conf::readConfFromFile(QString result)
 {
+    qDebug() << "Reading: " << result.toUtf8();
     QJsonDocument confJson = QJsonDocument::fromJson(result.toUtf8());
     if (!confJson.isNull())
     {
@@ -39,7 +43,13 @@ void Conf::readConfFromFile(QString result)
     else
     {
         qDebug() << "Could not parse: " << this->fileName;
+        this->loadDefaultConf();
     }
+}
+
+void Conf::loadDefaultConf()
+{
+    qDebug() << "ToDo";
 }
 
 QString Conf::value(QString key)
@@ -49,4 +59,3 @@ QString Conf::value(QString key)
     result = jsonValue.toString();
     return result;
 }
-
