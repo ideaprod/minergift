@@ -1,0 +1,3 @@
+[submodule "mglib/XmrigConnector/xmrig"]
+	path = mglib/XmrigConnector/xmrig
+	url = git@github.com:ideaprod/xmrig.git
