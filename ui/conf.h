@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QDebug>
 
 class Conf
 {
@@ -17,6 +18,7 @@ private:
     QJsonObject minerJson;
 
     void initConf(QString fileName = 0);
+    void loadFile(QString result, QString fileName);
 };
 
 #endif // CONF_H
