@@ -1,39 +1,50 @@
 #include "XmrigConnector.h"
 
 XmrigConnector::XmrigConnector(MinerApi *parent)
-  : MinerApi(parent)
+  : MinerApi(parent),
+    processStarted(false)
 {
     qDebug() << "XmrigConnector construct";
     this->setCpuUsage(10);
-
 }
 
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";
-    QString program = "./xmrig";
-    QStringList arguments;
-    arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
-              << "--no-color"
-              << "--threads=1"
-              << "--av=0"
-              << "--max-cpu-usage=" + QString::number(this->getCpuUsage())
-              << "--cpu-priority" << "1";
-    qDebug() << "args: " << arguments;
+    if (!processStarted) {
+        QString program = "./xmrig";
+        QStringList arguments;
+        arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
+                  << "--no-color"
+                  << "--threads=1"
+                  << "--av=0"
+                  << "--max-cpu-usage=" + QString::number(this->getCpuUsage())
+                  << "--cpu-priority" << "1";
+        qDebug() << "args: " << arguments;
 
-    myProcess = new QProcess();
-    myProcess->setReadChannelMode(QProcess::MergedChannels);
-    myProcess->start(program, arguments);
+        myProcess = new QProcess();
+        myProcess->setReadChannelMode(QProcess::MergedChannels);
+        myProcess->start(program, arguments);
 
-    QObject::connect(myProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+        QObject::connect(myProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
 
-    return 1;
+        processStarted = true;
+        return 1;
+    }
+    else {
+        qDebug() << "XmrigConnector start failed, already started";
+        return 0;
+    }
 }
 
 int XmrigConnector::stop()
 {
     qDebug() << "XmrigConnector stop";
-    myProcess->kill();
+
+    if (processStarted) {
+        myProcess->terminate();
+        processStarted = false;
+    }
     return 1;
 }
 
@@ -104,7 +115,12 @@ void XmrigConnector::setUserName(QString userName)
 
 MinerApi::MinerStatus XmrigConnector::getStatus()
 {
-    return MinerStatus::STOPPED;
+    if (processStarted) {
+        return MinerStatus::STARTED;
+    }
+    else {
+        return MinerStatus::STOPPED;
+    }
 }
 
 QString XmrigConnector::getHostInfo()

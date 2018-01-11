@@ -38,6 +38,7 @@ private:
     int cpuUsage;
 
     QProcess *myProcess;
+    bool processStarted;
 
 private slots:
 

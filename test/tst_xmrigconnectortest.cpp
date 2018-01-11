@@ -61,7 +61,7 @@ void XmrigConnectorTest::cleanup()
 
 void XmrigConnectorTest::test_start_initialStartOk()
 {
-    qDebug() << "test_start_firstStartOk";
+    qDebug() << "test_start_initialStartOk";
     QCOMPARE(xmc->start(), 1);
 }
 
@@ -80,7 +80,7 @@ void XmrigConnectorTest::test_stop_initialStopOk()
 
 void XmrigConnectorTest::test_stop_stopAfterStartOk()
 {
-    qDebug() << "test_stop_firstStopOk";
+    qDebug() << "test_stop_stopAfterStartOk";
     QCOMPARE(xmc->start(), 1);
     QCOMPARE(xmc->stop(), 1);
 }
