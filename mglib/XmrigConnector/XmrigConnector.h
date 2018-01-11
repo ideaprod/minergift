@@ -37,8 +37,15 @@ private:
     QString userName;
     int cpuUsage;
 
-    QProcess *myProcess;
-    bool processStarted;
+    QProcess *xmrigProcess;
+    bool xmrigProcessStarted;
+    int xmrigPid;
+
+    QProcess *cpulimitProcess;
+
+    void startXmrig();
+
+    void startCpulimit();
 
 private slots:
 
