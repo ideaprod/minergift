@@ -27,7 +27,7 @@ HEADERS += \
 win32 {
     QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
-                    && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files (x86)/libuv/include\" -DUV_LIBRARY=\"C:\Program Files (x86)\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
+                    && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
                     && mingw32-make.exe -C $$OUT_PWD/xmrig"
 
     QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \

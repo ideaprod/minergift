@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    //ToDo : dynamically destroy connectors instead of calling destructor
+    this->xmc->~XmrigConnector();
     delete ui;
 }
 

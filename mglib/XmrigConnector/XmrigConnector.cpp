@@ -11,7 +11,7 @@ XmrigConnector::XmrigConnector(MinerApi *parent)
 XmrigConnector::~XmrigConnector()
 {
     if (processStarted) {
-        myProcess->terminate();
+        this->stop();
     }
 }
 
@@ -51,7 +51,11 @@ int XmrigConnector::stop()
     qDebug() << "XmrigConnector stop";
 
     if (processStarted) {
+        qDebug() << "Terminate";
+        //Linux
         myProcess->terminate();
+        //Windows
+        myProcess->close();
         processStarted = false;
     }
     return 1;
