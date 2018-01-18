@@ -13,6 +13,7 @@ Q_OBJECT
 
 public:
     XmrigConnector(MinerApi *parent = 0);
+    ~XmrigConnector();
 
     int start();
     int stop();

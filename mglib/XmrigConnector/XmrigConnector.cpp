@@ -8,6 +8,13 @@ XmrigConnector::XmrigConnector(MinerApi *parent)
     this->setCpuUsage(10);
 }
 
+XmrigConnector::~XmrigConnector()
+{
+    if (processStarted) {
+        myProcess->terminate();
+    }
+}
+
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";
@@ -27,7 +34,9 @@ int XmrigConnector::start()
         myProcess->start(program, arguments);
 
         QObject::connect(myProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+        QObject::connect(myProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayProcessOutput()));
 
+        qDebug() << "Xmrig process state" << myProcess->state();
         processStarted = true;
         return 1;
     }

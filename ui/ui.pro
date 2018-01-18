@@ -35,6 +35,12 @@ HEADERS += \
 
 FORMS += mainwindow.ui
 
-QMAKE_POST_LINK += $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT} ;
+win32 {
+    QMAKE_POST_LINK += $$QMAKE_COPY debug\uiminergift.exe $${PROJECT_OUTPUT} \
+                    && $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT}
+}
 
-QMAKE_POST_LINK += $$QMAKE_COPY $$PWD/$$CONF $${PROJECT_OUTPUT}
+unix {
+    QMAKE_POST_LINK += $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT} \
+                    && $$QMAKE_COPY $$PWD/$$CONF $${PROJECT_OUTPUT}
+}

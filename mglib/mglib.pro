@@ -23,6 +23,20 @@ HEADERS += \
     minerapi.h \
     XmrigConnector/XmrigConnector.h
 
-QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig
 
-QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* xmrig/xmrig $${PROJECT_OUTPUT}
+win32 {
+    QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
+                    & cd xmrig \
+                    && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files (x86)/libuv/include\" -DUV_LIBRARY=\"C:\Program Files (x86)\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
+                    && mingw32-make.exe -C $$OUT_PWD/xmrig"
+
+    QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \
+                    & $$QMAKE_COPY debug\minergift.dll $${PROJECT_OUTPUT} \
+                    && $$QMAKE_COPY xmrig\xmrig.exe $${PROJECT_OUTPUT} "
+}
+
+unix {
+    QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig
+
+    QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* xmrig/xmrig $${PROJECT_OUTPUT}
+}
