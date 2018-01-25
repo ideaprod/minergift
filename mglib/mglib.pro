@@ -16,17 +16,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    XmrigConnector/XmrigConnector.cpp \
-    XmrigConnector/cpulimiter.cpp
 
-HEADERS += \
-    minerapi.h \
-    XmrigConnector/XmrigConnector.h \
-    XmrigConnector/cpulimiter.h
 
 
 win32 {
+    SOURCES += \
+        XmrigConnector/XmrigConnector.cpp \
+        XmrigConnector/cpulimiter.cpp
+
+    HEADERS += \
+        minerapi.h \
+        XmrigConnector/XmrigConnector.h \
+        XmrigConnector/cpulimiter.h
     QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
                     && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
@@ -38,7 +39,21 @@ win32 {
 }
 
 unix {
-    QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig
+    SOURCES += \
+        XmrigConnector/XmrigConnector.cpp
 
-    QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* xmrig/xmrig $${PROJECT_OUTPUT}
+    HEADERS += \
+        minerapi.h \
+        XmrigConnector/XmrigConnector.h
+
+    QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig && cd $$PWD \
+    && $$QMAKE_MKDIR cpulimit && cd cpulimit && cd $$PWD/cpulimit/ && make
+
+    QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* \
+    $$PWD/cpulimit/src/cpulimit \
+    xmrig/xmrig \
+    $${PROJECT_OUTPUT}
 }
+
+
+

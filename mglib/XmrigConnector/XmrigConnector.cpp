@@ -2,7 +2,7 @@
 
 XmrigConnector::XmrigConnector(MinerApi *parent)
   : MinerApi(parent),
-    processStarted(false)
+    xmrigProcessStarted(false)
 {
     qDebug() << "XmrigConnector construct";
     this->setCpuUsage(10);
@@ -10,7 +10,7 @@ XmrigConnector::XmrigConnector(MinerApi *parent)
 
 XmrigConnector::~XmrigConnector()
 {
-    if (processStarted) {
+    if (xmrigProcessStarted) {
         this->stop();
     }
 }
@@ -18,26 +18,9 @@ XmrigConnector::~XmrigConnector()
 int XmrigConnector::start()
 {
     qDebug() << "XmrigConnector start";
-    if (!processStarted) {
-        QString program = "./xmrig";
-        QStringList arguments;
-        arguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
-                  << "--no-color"
-                  << "--threads=1"
-                  << "--av=0"
-                  << "--max-cpu-usage=" + QString::number(this->getCpuUsage())
-                  << "--cpu-priority" << "1";
-        qDebug() << "args: " << arguments;
-
-        myProcess = new QProcess();
-        myProcess->setReadChannelMode(QProcess::MergedChannels);
-        myProcess->start(program, arguments);
-
-        QObject::connect(myProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
-        QObject::connect(myProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayProcessOutput()));
-
-        qDebug() << "Xmrig process state" << myProcess->state();
-        processStarted = true;
+    if (!xmrigProcessStarted) {
+        startXmrig();
+        startCpulimit();
         return 1;
     }
     else {
@@ -46,24 +29,60 @@ int XmrigConnector::start()
     }
 }
 
+void XmrigConnector::startXmrig()
+{
+    QString xmrigProgram = "./xmrig";
+    QStringList xmrigArguments;
+    xmrigArguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
+              << "--no-color"
+              << "--threads=1"
+              << "--av=0"
+              //<< "--max-cpu-usage=" + QString::number(this->getCpuUsage())
+              << "--cpu-priority" << "1";
+    qDebug() << "args: " << xmrigArguments;
+
+    xmrigProcess = new QProcess();
+    xmrigProcess->setReadChannelMode(QProcess::MergedChannels);
+    xmrigProcess->start(xmrigProgram, xmrigArguments);
+
+    QObject::connect(xmrigProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+    //xmrigPid = xmrigProcess->pid();
+
+    xmrigProcessStarted = true;
+}
+
+void XmrigConnector::startCpulimit()
+{
+    QString cpulimitProgram = "./cpulimit";
+    QStringList cpulimitArguments;
+    cpulimitArguments << "-l" + QString::number(this->getCpuUsage())
+              << "-p" + QString::number(xmrigPid);
+    qDebug() << "args: " << cpulimitArguments;
+
+    cpulimitProcess = new QProcess();
+    cpulimitProcess->setReadChannelMode(QProcess::MergedChannels);
+    cpulimitProcess->start(cpulimitProgram, cpulimitArguments);
+
+    QObject::connect(cpulimitProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+}
+
 int XmrigConnector::stop()
 {
     qDebug() << "XmrigConnector stop";
-
-    if (processStarted) {
+    if (xmrigProcessStarted) {
         qDebug() << "Terminate";
         //Linux
-        myProcess->terminate();
+        xmrigProcess->terminate();
         //Windows
-        myProcess->close();
-        processStarted = false;
+        xmrigProcess->close();
+        xmrigProcessStarted = false;
     }
     return 1;
 }
 
 void XmrigConnector::displayProcessOutput()
 {
-    qDebug() << myProcess->readAllStandardOutput();
+    qDebug() << xmrigProcess->readAllStandardOutput();
 }
 
 int XmrigConnector::getCpuUsage()
@@ -128,7 +147,7 @@ void XmrigConnector::setUserName(QString userName)
 
 MinerApi::MinerStatus XmrigConnector::getStatus()
 {
-    if (processStarted) {
+    if (xmrigProcessStarted) {
         return MinerStatus::STARTED;
     }
     else {
