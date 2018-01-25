@@ -43,7 +43,7 @@ public:
     //time period, to average the total usage to the limit specified.
     //Returns TRUE Successful, else FALSE
 
-    BOOL CalculateAndSleep();
+    BOOL CalculateAndSleep(DWORD processId);
 
     //Inline setter function
     inline void SetRatio(int p_ratio){m_ratio = p_ratio;}

@@ -1,4 +1,6 @@
+#include "cpulimiter.h"
 #include "XmrigConnector.h"
+
 
 XmrigConnector::XmrigConnector(MinerApi *parent)
   : MinerApi(parent),
@@ -21,6 +23,17 @@ int XmrigConnector::start()
     if (!xmrigProcessStarted) {
         startXmrig();
         startCpulimit();
+
+        //WIP
+//        CPULimiter limiter = 100;
+//        while(1)
+//        {
+
+//            //limit cpu usage here.
+//            limiter.CalculateAndSleep(xmrigProcess->processId());
+//        }
+
+
         return 1;
     }
     else {

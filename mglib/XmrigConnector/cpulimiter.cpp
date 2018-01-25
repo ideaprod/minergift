@@ -1,11 +1,24 @@
 #include "cpulimiter.h"
+#include <iostream>
+
+#include <psapi.h>
+
+//constructors
+CPULimiter::CPULimiter(int p_ratio)
+:m_ratio(p_ratio)
+{
+    ::ZeroMemory( &m_lastTotalSystemTime, sizeof(LARGE_INTEGER));
+    ::ZeroMemory( &m_lastThreadUsageTime, sizeof(LARGE_INTEGER));
+}
 
 CPULimiter::CPULimiter()
 {
-
+    ::ZeroMemory( &m_lastTotalSystemTime, sizeof(LARGE_INTEGER));
+    ::ZeroMemory( &m_lastThreadUsageTime, sizeof(LARGE_INTEGER));
+    m_ratio = DEFAULT_MAX_PERCENTAGE;
 }
 
-BOOL CPULimiter::CalculateAndSleep()
+BOOL CPULimiter::CalculateAndSleep(DWORD processId)
 {
     //Declare variables;
     FILETIME sysidle, kerusage, userusage, threadkern
@@ -16,10 +29,17 @@ BOOL CPULimiter::CalculateAndSleep()
     if(!::GetSystemTimes(&sysidle, &kerusage, &userusage))
         return FALSE;
 
-    //Get Thread user and kernel times
-    if(!::GetThreadTimes(GetCurrentThread(), &threadcreat, &threadexit
+    HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+
+
+    std::cout << "Pid" << processId << std::endl;
+
+    //Get Process user and kernel times
+    if(!::GetProcessTimes(processHandle, &threadcreat, &threadexit
                             , &threadkern, &threaduser))
         return FALSE;
+
+
 
     //Calculates total system times
     //This is sum of time used by system in kernel, user and idle mode.
@@ -70,8 +90,11 @@ BOOL CPULimiter::CalculateAndSleep()
             return FALSE;
 
         //Time to Sleep :)
-        Sleep(timetosleepin100ns.QuadPart/10000);
+        std::cout << "truc" << processHandle << std::endl;
+        //Sleep(timetosleepin100ns.QuadPart/10000);
     }
+
+    CloseHandle(processHandle);
 
     //Copy usage time values for next time calculations.
     m_lastTotalSystemTime.QuadPart = thissystime.QuadPart;
