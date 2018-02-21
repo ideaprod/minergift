@@ -1,4 +1,1 @@
-
-win32: PROJECT_OUTPUT = ..\output
-
-unix: PROJECT_OUTPUT = $$OUT_PWD/../output
+PROJECT_OUTPUT = $$shell_path($$OUT_PWD/../output)

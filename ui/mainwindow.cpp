@@ -76,7 +76,7 @@ void MainWindow::start()
 
 void MainWindow::stop()
 {
-    qDebug() << "Stoping...";
+    qDebug() << "Stopping...";
     this->xmc->stop();
     ui->sliderRate->setEnabled(true);
     started = false;

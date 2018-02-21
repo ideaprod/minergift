@@ -50,7 +50,8 @@ private:
 
 private slots:
 
-    void displayProcessOutput();
+    void displayStandardOutput();
+    void displayErrorOutput();
 };
 
 #endif // XMRIGCONNECTOR_H

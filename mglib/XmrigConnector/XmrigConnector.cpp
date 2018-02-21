@@ -58,7 +58,8 @@ void XmrigConnector::startXmrig()
     xmrigProcess->setReadChannelMode(QProcess::MergedChannels);
     xmrigProcess->start(xmrigProgram, xmrigArguments);
 
-    QObject::connect(xmrigProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+    QObject::connect(xmrigProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayStandardOutput()));
+    QObject::connect(xmrigProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorOutput()));
     //xmrigPid = xmrigProcess->pid();
 
     xmrigProcessStarted = true;
@@ -76,26 +77,46 @@ void XmrigConnector::startCpulimit()
     cpulimitProcess->setReadChannelMode(QProcess::MergedChannels);
     cpulimitProcess->start(cpulimitProgram, cpulimitArguments);
 
-    QObject::connect(cpulimitProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayProcessOutput()));
+    QObject::connect(cpulimitProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayStandardOutput()));
+    QObject::connect(cpulimitProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorOutput()));
 }
 
 int XmrigConnector::stop()
 {
     qDebug() << "XmrigConnector stop";
     if (xmrigProcessStarted) {
-        qDebug() << "Terminate";
-        //Linux
-        xmrigProcess->terminate();
-        //Windows
+        qDebug() << "Closing and killing xmrig and cpulimit processes";
         xmrigProcess->close();
+        cpulimitProcess->close();
         xmrigProcessStarted = false;
     }
     return 1;
 }
 
-void XmrigConnector::displayProcessOutput()
+void XmrigConnector::displayStandardOutput()
 {
-    qDebug() << xmrigProcess->readAllStandardOutput();
+    QByteArray xmrigProcessLogs = xmrigProcess->readAllStandardOutput();
+    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardOutput();
+
+    if (! xmrigProcessLogs.isEmpty()) {
+        qDebug() << "xmrigProcess" << xmrigProcessLogs;
+    }
+    if (! cpulimitProcessLogs.isEmpty()) {
+        qDebug() << "cpulimitProcess" << cpulimitProcessLogs;
+    }
+}
+
+void XmrigConnector::displayErrorOutput()
+{
+    QByteArray xmrigProcessLogs = xmrigProcess->readAllStandardError();
+    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardError();
+
+    if (! xmrigProcessLogs.isEmpty()) {
+        qCritical() << "xmrigProcess ERROR" << xmrigProcessLogs;
+    }
+    if (! cpulimitProcessLogs.isEmpty()) {
+        qCritical() << "cpulimitProcess ERROR" << cpulimitProcessLogs;
+    }
 }
 
 int XmrigConnector::getCpuUsage()
