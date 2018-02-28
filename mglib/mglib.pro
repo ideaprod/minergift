@@ -35,7 +35,8 @@ win32 {
 
     QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \
                     & $$QMAKE_COPY debug\minergift.dll $${PROJECT_OUTPUT} \
-                    && $$QMAKE_COPY xmrig\xmrig.exe $${PROJECT_OUTPUT} "
+                    && $$QMAKE_COPY xmrig\xmrig.exe $${PROJECT_OUTPUT} \
+                    && $$QMAKE_COPY $$shell_path($$PWD/XmrigConnector/libuv/libuv.dll) $${PROJECT_OUTPUT} "
 }
 
 unix {
@@ -47,12 +48,12 @@ unix {
         XmrigConnector/XmrigConnector.h
 
     QMAKE_PRE_LINK += $$QMAKE_MKDIR xmrig && cd xmrig && cmake $$PWD/XmrigConnector/xmrig -DWITH_HTTPD=OFF && make -C $$OUT_PWD/xmrig && cd $$PWD \
-    && $$QMAKE_MKDIR cpulimit && cd cpulimit && cd $$PWD/cpulimit/ && make
+                    && $$QMAKE_MKDIR cpulimit && cd cpulimit && cd $$PWD/cpulimit/ && make
 
     QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P libminergift.so* \
-    $$PWD/cpulimit/src/cpulimit \
-    xmrig/xmrig \
-    $${PROJECT_OUTPUT}
+                    $$PWD/cpulimit/src/cpulimit \
+                    xmrig/xmrig \
+                    $${PROJECT_OUTPUT}
 }
 
 
