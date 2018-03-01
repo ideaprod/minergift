@@ -1,4 +1,19 @@
-#include "cpulimiter.h"
+/*
+ * THE WORK IS PROVIDED UNDER THE TERMS OF THIS CODE PROJECT OPEN LICENSE ("LICENSE").
+ * THE WORK IS PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW.
+ * ANY USE OF THE WORK OTHER THAN AS AUTHORIZED UNDER THIS LICENSE OR COPYRIGHT LAW IS PROHIBITED.
+ *
+ * BY EXERCISING ANY RIGHTS TO THE WORK PROVIDED HEREIN, YOU ACCEPT AND AGREE TO BE BOUND BY THE TERMS OF THIS LICENSE.
+ * THE AUTHOR GRANTS YOU THE RIGHTS CONTAINED HEREIN IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND CONDITIONS.
+ * IF YOU DO NOT AGREE TO ACCEPT AND BE BOUND BY THE TERMS OF THIS LICENSE, YOU CANNOT MAKE ANY USE OF THE WORK.
+ *
+ * 27th August, 2008 : This code was initialy posted by https://www.codeproject.com/Members/Lone-Developer
+ *   1st March, 2018 : This code was modified for the projet MinerGift to adapt it to a process depending
+ * on the number of cores.
+ *
+*/
+
+#include "CpuLimiter.h"
 #include <iostream>
 
 #include <psapi.h>
@@ -18,86 +33,85 @@ CPULimiter::CPULimiter()
     m_ratio = DEFAULT_MAX_PERCENTAGE;
 }
 
-BOOL CPULimiter::CalculateAndSleep(DWORD processId)
+BOOL CPULimiter::CalculateAndSleep(DWORD processId, int nbCores)
 {
     //Declare variables;
-    FILETIME sysidle, kerusage, userusage, threadkern
-                   , threaduser, threadcreat, threadexit;
-    LARGE_INTEGER tmpvar, thissystime, thisthreadtime;
+    FILETIME sysIdle, kerUsage, userUsage, processKern
+                   , processUser, processCreat, processExit;
+    LARGE_INTEGER tmpVar, thisSysTime, thisProcessTime;
 
     //Get system kernel, user and idle times
-    if(!::GetSystemTimes(&sysidle, &kerusage, &userusage))
+    if(!::GetSystemTimes(&sysIdle, &kerUsage, &userUsage))
+    {
         return FALSE;
+    }
 
     HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
 
-
-    std::cout << "Pid" << processId << std::endl;
-
     //Get Process user and kernel times
-    if(!::GetProcessTimes(processHandle, &threadcreat, &threadexit
-                            , &threadkern, &threaduser))
+    if(!::GetProcessTimes(processHandle, &processCreat, &processExit, &processKern, &processUser))
+    {
         return FALSE;
-
-
+    }
 
     //Calculates total system times
     //This is sum of time used by system in kernel, user and idle mode.
 
-    tmpvar.LowPart = sysidle.dwLowDateTime;
-    tmpvar.HighPart = sysidle.dwHighDateTime;
-    thissystime.QuadPart = tmpvar.QuadPart;
+    tmpVar.LowPart = sysIdle.dwLowDateTime;
+    tmpVar.HighPart = sysIdle.dwHighDateTime;
+    thisSysTime.QuadPart = tmpVar.QuadPart;
 
-    tmpvar.LowPart = kerusage.dwLowDateTime;
-    tmpvar.HighPart = kerusage.dwHighDateTime;
-    thissystime.QuadPart = thissystime.QuadPart + tmpvar.QuadPart;
+    tmpVar.LowPart = kerUsage.dwLowDateTime;
+    tmpVar.HighPart = kerUsage.dwHighDateTime;
+    thisSysTime.QuadPart = thisSysTime.QuadPart + tmpVar.QuadPart;
 
-    tmpvar.LowPart = userusage.dwLowDateTime;
-    tmpvar.HighPart = userusage.dwHighDateTime;
-    thissystime.QuadPart = thissystime.QuadPart + tmpvar.QuadPart;
+    tmpVar.LowPart = userUsage.dwLowDateTime;
+    tmpVar.HighPart = userUsage.dwHighDateTime;
+    thisSysTime.QuadPart = thisSysTime.QuadPart + tmpVar.QuadPart;
 
     //Calculates time spent by this thread in user and kernel mode.
 
-    tmpvar.LowPart = threadkern.dwLowDateTime;
-    tmpvar.HighPart = threadkern.dwHighDateTime;
-    thisthreadtime.QuadPart = tmpvar.QuadPart;
+    tmpVar.LowPart = processKern.dwLowDateTime;
+    tmpVar.HighPart = processKern.dwHighDateTime;
+    thisProcessTime.QuadPart = tmpVar.QuadPart;
 
-    tmpvar.LowPart = threaduser.dwLowDateTime;
-    tmpvar.HighPart = threaduser.dwHighDateTime;
-    thisthreadtime.QuadPart = thisthreadtime.QuadPart + tmpvar.QuadPart;
+    tmpVar.LowPart = processUser.dwLowDateTime;
+    tmpVar.HighPart = processUser.dwHighDateTime;
+    thisProcessTime.QuadPart = thisProcessTime.QuadPart + tmpVar.QuadPart;
 
     //Check if this is first time this function is called
     //if yes, escape rest after copying current system and thread time
     //for further use
     //Also check if the ratio of differences between current and previous times
     //exceeds the specified ratio.
-
-    if( thisthreadtime.QuadPart != 0
-        && (((thisthreadtime.QuadPart - m_lastThreadUsageTime.QuadPart)*100)
-          - ((thissystime.QuadPart - m_lastTotalSystemTime.QuadPart)*m_ratio)) > 0)
+    if( thisProcessTime.QuadPart != 0
+        && (((thisProcessTime.QuadPart - m_lastThreadUsageTime.QuadPart)*100)
+          - ((thisSysTime.QuadPart - m_lastTotalSystemTime.QuadPart)*m_ratio)) > 0)
     {
         //Calculate the time interval to sleep for averaging the extra CPU usage
         //by this thread.
 
         LARGE_INTEGER timetosleepin100ns;
-        timetosleepin100ns.QuadPart = (((thisthreadtime.QuadPart
-                                        - m_lastThreadUsageTime.QuadPart)*100)/m_ratio)
-                       - (thissystime.QuadPart
-                                          - m_lastTotalSystemTime.QuadPart);
+        timetosleepin100ns.QuadPart =
+                          (((thisProcessTime.QuadPart - m_lastThreadUsageTime.QuadPart)*100)/m_ratio)
+                        - (thisSysTime.QuadPart - m_lastTotalSystemTime.QuadPart);
 
         //check if time is less than a millisecond, if yes, keep it for next time.
         if((timetosleepin100ns.QuadPart/10000) <= 0)
+        {
             return FALSE;
+        }
 
         //Time to Sleep :)
-        std::cout << "truc" << processHandle << std::endl;
-        //Sleep(timetosleepin100ns.QuadPart/10000);
+        DebugActiveProcess(processId);
+        Sleep((timetosleepin100ns.QuadPart/10000)/nbCores);
+        DebugActiveProcessStop(processId);
     }
 
     CloseHandle(processHandle);
 
     //Copy usage time values for next time calculations.
-    m_lastTotalSystemTime.QuadPart = thissystime.QuadPart;
-    m_lastThreadUsageTime.QuadPart = thisthreadtime.QuadPart;
+    m_lastTotalSystemTime.QuadPart = thisSysTime.QuadPart;
+    m_lastThreadUsageTime.QuadPart = thisProcessTime.QuadPart;
     return TRUE;
 }

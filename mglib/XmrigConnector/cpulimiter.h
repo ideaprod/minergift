@@ -1,5 +1,16 @@
-
-
+/*
+ * THE WORK IS PROVIDED UNDER THE TERMS OF THIS CODE PROJECT OPEN LICENSE ("LICENSE").
+ * THE WORK IS PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW.
+ * ANY USE OF THE WORK OTHER THAN AS AUTHORIZED UNDER THIS LICENSE OR COPYRIGHT LAW IS PROHIBITED.
+ *
+ * BY EXERCISING ANY RIGHTS TO THE WORK PROVIDED HEREIN, YOU ACCEPT AND AGREE TO BE BOUND BY THE TERMS OF THIS LICENSE.
+ * THE AUTHOR GRANTS YOU THE RIGHTS CONTAINED HEREIN IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND CONDITIONS.
+ * IF YOU DO NOT AGREE TO ACCEPT AND BE BOUND BY THE TERMS OF THIS LICENSE, YOU CANNOT MAKE ANY USE OF THE WORK.
+ *
+ * 27th August, 2008 : This code was initialy posted by https://www.codeproject.com/Members/Lone-Developer
+ * 1st March, 2018 : This code was modified for the projet MinerGift to adapt it to a process depending on the number of cores.
+ *
+*/
 #ifndef CPULIMITER_H
 #define CPULIMITER_H
 
@@ -49,7 +60,7 @@ public:
     //time period, to average the total usage to the limit specified.
     //Returns TRUE Successful, else FALSE
 
-    BOOL CalculateAndSleep(DWORD processId);
+    BOOL CalculateAndSleep(DWORD processId, int nbCores);
 
     //Inline setter function
     inline void SetRatio(int p_ratio){m_ratio = p_ratio;}

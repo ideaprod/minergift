@@ -1,4 +1,4 @@
-#include "cpulimiter.h"
+#include "CpuLimiter.h"
 #include "XmrigConnector.h"
 
 
@@ -23,17 +23,6 @@ int XmrigConnector::start()
     if (!xmrigProcessStarted) {
         startXmrig();
         startCpulimit();
-
-        //WIP
-//        CPULimiter limiter = 100;
-//        while(1)
-//        {
-
-//            //limit cpu usage here.
-//            limiter.CalculateAndSleep(xmrigProcess->processId());
-//        }
-
-
         return 1;
     }
     else {
@@ -48,9 +37,11 @@ void XmrigConnector::startXmrig()
     QStringList xmrigArguments;
     xmrigArguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
               << "--no-color"
-              << "--threads=1"
-              << "--av=0"
+              //<< "--threads=1"
+              //<< "--av=0"
               //<< "--max-cpu-usage=" + QString::number(this->getCpuUsage())
+              << "--max-cpu-usage=100"
+              //<< "--cpu-affinity" << "0"
               << "--cpu-priority" << "1";
     qDebug() << "args: " << xmrigArguments;
 
@@ -60,20 +51,24 @@ void XmrigConnector::startXmrig()
 
     QObject::connect(xmrigProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayStandardOutput()));
     QObject::connect(xmrigProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorOutput()));
-    xmrigPid = (int)((size_t)xmrigProcess->pid());
+
+    xmrigPid = xmrigProcess->processId();
 
     xmrigProcessStarted = true;
 }
 
+#if defined(Q_OS_LINUX)
 void XmrigConnector::startCpulimit()
 {
+    cpulimitProcess = new QProcess();
+
     QString cpulimitProgram = "./cpulimit";
     QStringList cpulimitArguments;
     cpulimitArguments << "-l" + QString::number(this->getCpuUsage())
               << "-p" + QString::number(xmrigPid);
     qDebug() << "args: " << cpulimitArguments;
 
-    cpulimitProcess = new QProcess();
+
     cpulimitProcess->setReadChannelMode(QProcess::MergedChannels);
     cpulimitProcess->start(cpulimitProgram, cpulimitArguments);
 
@@ -81,13 +76,31 @@ void XmrigConnector::startCpulimit()
     QObject::connect(cpulimitProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorOutput()));
 }
 
+void XmrigConnector::stopCpuLimit()
+{
+    cpulimitProcess->close();
+}
+
+#elif defined(Q_OS_WIN)
+void XmrigConnector::startCpulimit()
+{
+    cpuLimitationThread = new CpuLimitationThread(xmrigPid,this->getCpuUsage());
+    cpuLimitationThread->start();
+}
+
+void XmrigConnector::stopCpuLimit()
+{
+    cpuLimitationThread->requestInterruption();
+}
+#endif
+
 int XmrigConnector::stop()
 {
     qDebug() << "XmrigConnector stop";
     if (xmrigProcessStarted) {
         qDebug() << "Closing and killing xmrig and cpulimit processes";
         xmrigProcess->close();
-        cpulimitProcess->close();
+        stopCpuLimit();
         xmrigProcessStarted = false;
     }
     return 1;
@@ -96,27 +109,30 @@ int XmrigConnector::stop()
 void XmrigConnector::displayStandardOutput()
 {
     QByteArray xmrigProcessLogs = xmrigProcess->readAllStandardOutput();
-    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardOutput();
-
     if (! xmrigProcessLogs.isEmpty()) {
         qDebug() << "xmrigProcess" << xmrigProcessLogs;
     }
+    #if defined(Q_OS_LINUX)
+    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardOutput();
     if (! cpulimitProcessLogs.isEmpty()) {
         qDebug() << "cpulimitProcess" << cpulimitProcessLogs;
     }
+    #endif
 }
 
 void XmrigConnector::displayErrorOutput()
 {
     QByteArray xmrigProcessLogs = xmrigProcess->readAllStandardError();
-    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardError();
-
     if (! xmrigProcessLogs.isEmpty()) {
         qCritical() << "xmrigProcess ERROR" << xmrigProcessLogs;
     }
+
+    #if defined(Q_OS_LINUX)
+    QByteArray cpulimitProcessLogs = cpulimitProcess->readAllStandardError();
     if (! cpulimitProcessLogs.isEmpty()) {
         qCritical() << "cpulimitProcess ERROR" << cpulimitProcessLogs;
     }
+    #endif
 }
 
 int XmrigConnector::getCpuUsage()

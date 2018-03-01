@@ -5,6 +5,7 @@
 #include <QProcess>
 
 #include "minerapi.h"
+#include "CpuLimitationThread.h"
 
 class XmrigConnector : public MinerApi
 {
@@ -43,10 +44,13 @@ private:
     int xmrigPid;
 
     QProcess *cpulimitProcess;
+    CpuLimitationThread *cpuLimitationThread;
 
     void startXmrig();
 
     void startCpulimit();
+
+    void stopCpuLimit();
 
 private slots:
 

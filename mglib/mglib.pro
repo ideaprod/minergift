@@ -21,13 +21,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 win32 {
     SOURCES += \
-        XmrigConnector/XmrigConnector.cpp \
-        XmrigConnector/cpulimiter.cpp
+        XmrigConnector/XmrigConnector.cpp
 
     HEADERS += \
         minerapi.h \
-        XmrigConnector/XmrigConnector.h \
-        XmrigConnector/cpulimiter.h
+        XmrigConnector/XmrigConnector.h
     QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
                     && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
@@ -55,6 +53,14 @@ unix {
                     xmrig/xmrig \
                     $${PROJECT_OUTPUT}
 }
+
+HEADERS += \
+    XmrigConnector/CpuLimiter.h \
+    XmrigConnector/CpuLimitationThread.h
+
+SOURCES += \
+    XmrigConnector/CpuLimiter.cpp \
+    XmrigConnector/CpuLimitationThread.cpp
 
 
 
