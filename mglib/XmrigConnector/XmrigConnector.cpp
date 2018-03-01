@@ -1,4 +1,4 @@
-#include "CpuLimiter.h"
+
 #include "XmrigConnector.h"
 
 

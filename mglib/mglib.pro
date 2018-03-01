@@ -16,16 +16,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
-
-
 win32 {
     SOURCES += \
-        XmrigConnector/XmrigConnector.cpp
+        XmrigConnector/XmrigConnector.cpp \
+        XmrigConnector/CpuLimiter.h \
+        XmrigConnector/CpuLimitationThread.h
 
     HEADERS += \
         minerapi.h \
-        XmrigConnector/XmrigConnector.h
+        XmrigConnector/XmrigConnector.h \
+        XmrigConnector/CpuLimiter.cpp \
+        XmrigConnector/CpuLimitationThread.cpp
+
     QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
                     && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
@@ -54,13 +56,6 @@ unix {
                     $${PROJECT_OUTPUT}
 }
 
-HEADERS += \
-    XmrigConnector/CpuLimiter.h \
-    XmrigConnector/CpuLimitationThread.h
-
-SOURCES += \
-    XmrigConnector/CpuLimiter.cpp \
-    XmrigConnector/CpuLimitationThread.cpp
 
 
 
