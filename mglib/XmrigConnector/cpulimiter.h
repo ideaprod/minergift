@@ -1,3 +1,5 @@
+#if defined(Q_OS_WIN)
+
 #ifndef CPULIMITER_H
 #define CPULIMITER_H
 
@@ -49,3 +51,4 @@ public:
     inline void SetRatio(int p_ratio){m_ratio = p_ratio;}
 };
 #endif // CPULIMITER_H
+#endif // Q_OS_WIN

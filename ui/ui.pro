@@ -41,6 +41,6 @@ win32 {
 }
 
 unix {
-    QMAKE_POST_LINK += "( if not exist $$shell_path($$OUT_PWD/../output/$$CONF) $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT} ) \
-                    & $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT} "
+    QMAKE_POST_LINK += "if [ ! -f $$shell_path($$OUT_PWD/../output/$$CONF) ]; then $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT}; fi \
+                    && $$QMAKE_COPY $$TARGET $${PROJECT_OUTPUT} "
 }
