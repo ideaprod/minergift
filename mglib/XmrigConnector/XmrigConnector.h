@@ -1,6 +1,7 @@
 #ifndef XMRIGCONNECTOR_H
 #define XMRIGCONNECTOR_H
 
+#include <QtGlobal>
 #include <QDebug>
 #include <QProcess>
 

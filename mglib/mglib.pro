@@ -19,14 +19,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 win32 {
     SOURCES += \
         XmrigConnector/XmrigConnector.cpp \
-        XmrigConnector/CpuLimiter.h \
-        XmrigConnector/CpuLimitationThread.h
+        XmrigConnector/CpuLimiter.cpp \
+        XmrigConnector/CpuLimitationThread.cpp
 
     HEADERS += \
         minerapi.h \
         XmrigConnector/XmrigConnector.h \
-        XmrigConnector/CpuLimiter.cpp \
-        XmrigConnector/CpuLimitationThread.cpp
+        XmrigConnector/CpuLimiter.h \
+        XmrigConnector/CpuLimitationThread.h
 
     QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
