@@ -1,7 +1,11 @@
-#if defined(Q_OS_WIN)
+
 
 #ifndef CPULIMITER_H
 #define CPULIMITER_H
+
+#include <QtGlobal>
+
+#ifdef Q_OS_WIN
 
 #include <windef.h>
 #include <winbase.h>

@@ -60,7 +60,7 @@ void XmrigConnector::startXmrig()
 
     QObject::connect(xmrigProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(displayStandardOutput()));
     QObject::connect(xmrigProcess, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorOutput()));
-    xmrigPid = xmrigProcess->pid();
+    xmrigPid = (int)((size_t)xmrigProcess->pid());
 
     xmrigProcessStarted = true;
 }
