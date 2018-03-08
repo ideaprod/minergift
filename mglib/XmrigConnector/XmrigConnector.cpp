@@ -35,7 +35,7 @@ void XmrigConnector::startXmrig()
 {
     QString xmrigProgram = "./xmrig";
     QStringList xmrigArguments;
-    xmrigArguments << "-o" << "stratum+tcp://xmr.pool.minergate.com:45560" << "-u" << this->getUserName() << "-k"
+    xmrigArguments << "-o" << "stratum+tcp://minergift.fr:3333" << "-u" << this->getUserName() << "-k"
               << "--no-color"
               //<< "--threads=1"
               //<< "--av=0"
