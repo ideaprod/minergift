@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QMessageBox>
+#include <QComboBox>
 
 #include "constants.h"
 #include "minerapi.h"
@@ -28,19 +32,37 @@ private slots:
     void on_sliderRate_valueChanged();
     void on_sliderRate_sliderMoved();
 
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+
 private:
     Ui::MainWindow *ui;
+    XmrigConnector * xmc;
+    Conf * conf;
+
     bool started;
     void start();
     void stop();
-    XmrigConnector * xmc;
-    Conf * conf;
+
     void initConnectors();
     void initConf();
     void initUi();
+    void initIcons();
+
     QIcon * playIcon;
     QIcon * stopIcon;
-    void initIcons();
+    QIcon * trayIcon;
+    QSystemTrayIcon * systemTrayIcon;
+    QMenu *trayIconMenu;
+    void createActions();
+    void createTrayIcon();
+    void initSysTray();
+    void changeEvent(QEvent *event);
+
+    QAction *minimizeAction;
+    QAction *restoreAction;
+    QAction *quitAction;
+
+    void hideSlider();
 };
 
 #endif // MAINWINDOW_H
