@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initUi();
     initConnectors();
     this->start();
+
 }
 
 MainWindow::~MainWindow()
@@ -24,9 +25,20 @@ void MainWindow::initConf()
     this->conf = new Conf("./miner.json");
 }
 
+void MainWindow::initIcons()
+{
+    stopIcon = new QIcon();
+    stopIcon->addFile("://images/red-stop-button-plain-icon-th.png");
+    playIcon = new QIcon();
+    playIcon->addFile("://images/green-plain-play-button-icon-th.png");
+}
+
 void MainWindow::initUi()
 {
     ui->setupUi(this);
+    initIcons();
+    ui->lcdRate->hide();
+    ui->sliderRate->hide();
 }
 
 void MainWindow::initConnectors()
@@ -71,6 +83,8 @@ void MainWindow::start()
     qDebug() << "Starting...";
     this->xmc->start();
     ui->sliderRate->setEnabled(false);
+    ui->buttonStartStop->setText("Stop");
+    ui->buttonStartStop->setIcon(*stopIcon);
     started = true;
 }
 
@@ -79,5 +93,7 @@ void MainWindow::stop()
     qDebug() << "Stopping...";
     this->xmc->stop();
     ui->sliderRate->setEnabled(true);
+    ui->buttonStartStop->setText("Start");
+    ui->buttonStartStop->setIcon(*playIcon);
     started = false;
 }

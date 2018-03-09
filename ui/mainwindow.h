@@ -33,11 +33,14 @@ private:
     bool started;
     void start();
     void stop();
-    XmrigConnector *xmc;
-    Conf *conf;
+    XmrigConnector * xmc;
+    Conf * conf;
     void initConnectors();
     void initConf();
     void initUi();
+    QIcon * playIcon;
+    QIcon * stopIcon;
+    void initIcons();
 };
 
 #endif // MAINWINDOW_H

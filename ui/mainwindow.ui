@@ -2,82 +2,194 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>421</width>
-    <height>185</height>
+    <width>160</width>
+    <height>120</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>MinerGift</string>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>160</width>
+    <height>120</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>160</width>
+    <height>120</height>
+   </size>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="uiminergift.qrc">
+    <normaloff>:/images/gavel-297564_960_720.png</normaloff>:/images/gavel-297564_960_720.png</iconset>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
-      <width>401</width>
-      <height>161</height>
+      <y>0</y>
+      <width>141</width>
+      <height>119</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <layout class="QHBoxLayout" name="topHorizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
+       </property>
        <item>
-        <widget class="QFrame" name="frame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+        <widget class="QPushButton" name="pushButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
          </property>
-         <property name="lineWidth">
-          <number>1</number>
+         <property name="text">
+          <string/>
          </property>
-         <widget class="QLabel" name="labelQTG">
-          <property name="geometry">
-           <rect>
-            <x>240</x>
-            <y>10</y>
-            <width>155</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Qu'est ce que tu GEEKes ?</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="labelThankYou">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>196</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Un grand merci de le part de :</string>
-          </property>
-         </widget>
+         <property name="icon">
+          <iconset resource="uiminergift.qrc">
+           <normaloff>:/images/Flo.png</normaloff>:/images/Flo.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelThankYou">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Merci !!</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="uiminergift.qrc">
+           <normaloff>:/images/Tom.png</normaloff>:/images/Tom.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="Line" name="sep1">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <layout class="QHBoxLayout" name="bottomHorizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinimumSize</enum>
        </property>
-      </widget>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonStartStop">
+         <property name="text">
+          <string>Start</string>
+         </property>
+         <property name="icon">
+          <iconset resource="uiminergift.qrc">
+           <normaloff>:/images/green-plain-play-button-icon-th.png</normaloff>:/images/green-plain-play-button-icon-th.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="1">
+       <property name="horizontalSpacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="1">
         <widget class="QLCDNumber" name="lcdRate">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="smallDecimalPoint">
           <bool>false</bool>
          </property>
@@ -93,14 +205,13 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="labelInfoRate">
-         <property name="text">
-          <string>Un peu, beaucoup, passionément ??</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
         <widget class="QSlider" name="sliderRate">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimum">
           <number>1</number>
          </property>
@@ -117,47 +228,15 @@
        </item>
       </layout>
      </item>
-     <item>
-      <widget class="Line" name="sep2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="bottomHorizontalLayout">
-       <item>
-        <widget class="QPushButton" name="buttonStartStop">
-         <property name="text">
-          <string>Start / Stop</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
     </layout>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="uiminergift.qrc"/>
+ </resources>
  <connections>
-  <connection>
-   <sender>sliderRate</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lcdRate</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>158</x>
-     <y>133</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>396</x>
-     <y>135</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>sliderRate</sender>
    <signal>sliderMoved(int)</signal>
@@ -171,6 +250,22 @@
     <hint type="destinationlabel">
      <x>389</x>
      <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sliderRate</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdRate</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>158</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>135</y>
     </hint>
    </hints>
   </connection>
