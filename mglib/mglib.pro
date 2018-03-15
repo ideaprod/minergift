@@ -34,7 +34,7 @@ win32 {
                     && mingw32-make.exe -C $$OUT_PWD/xmrig"
 
     QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \
-                    & $$QMAKE_COPY debug\minergift.dll $${PROJECT_OUTPUT} \
+                    & $$QMAKE_COPY $${FOLDER}\minergift.dll $${PROJECT_OUTPUT} \
                     && $$QMAKE_COPY xmrig\xmrig.exe $${PROJECT_OUTPUT} \
                     && $$QMAKE_COPY $$shell_path($$PWD/XmrigConnector/libuv/libuv.dll) $${PROJECT_OUTPUT} "
 }

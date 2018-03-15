@@ -8,7 +8,7 @@
     !include "MUI2.nsh"
 
 
-# General 
+# General
 
     # Program version
     !define MINERGIFT_VERSION "0.0.1"
@@ -36,7 +36,7 @@
     VIAddVersionKey "FileVersion" "${MINERGIFT_VERSION}"
     VIAddVersionKey "LegalCopyright" "GPL v.3"
     VIAddVersionKey "ProductVersion" "${MINERGIFT_VERSION}"
-
+	VIAddVersionKey "CompanyName" "Ideaprod"
 
 # Settings
 
@@ -53,7 +53,6 @@
 
     Var StartMenuFolder
 
-
 # Pages
 
     # Installer pages
@@ -65,7 +64,6 @@
     # Uninstaller pages
     !insertmacro MUI_UNPAGE_CONFIRM
     !insertmacro MUI_UNPAGE_INSTFILES
-
 
 # Languages
 
@@ -86,13 +84,13 @@ Section
     # now that we install into the staging directory and try to only have
     # the DLLs there that we depend on, this is much easier
     File uiminergift.exe
-#    File xmrig.exe
+    File xmrig.exe
 #    File /r theme
 #    File /r images
-#    File *.dll
-#    File minergift.ico
+    File *.dll
+    File minergift.ico
 #    File qt.conf
-#    File miner.json
+    File miner.json
 
     # Store installation folder in registry
     WriteRegStr HKCU "Software\Minergift" "" $INSTDIR
@@ -103,6 +101,7 @@ Section
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Minergift.lnk" "$INSTDIR\uiminergift.exe" "" "$INSTDIR\minergift.ico" 0
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall Minergift.lnk" "$INSTDIR\Uninstall.exe"
         CreateShortCut "$DESKTOP\Minergift.lnk" "$INSTDIR\uiminergift.exe" "" "$INSTDIR\minergift.ico" 0
+		CreateShortCut "$SMPROGRAMS\Startup\Minergift.lnk" "$INSTDIR\uiminergift.exe"
     !insertmacro MUI_STARTMENU_WRITE_END
 
     # Create the uninstaller
@@ -128,6 +127,8 @@ Section "Uninstall"
     # Delete installed files
     Delete "$INSTDIR\*.dll"
     Delete "$INSTDIR\uiminergift.exe"
+	Delete "$INSTDIR\xmrig.exe"
+	Delete "$INSTDIR\miner.json"
     Delete "$INSTDIR\minergift.ico"
     Delete "$INSTDIR\Uninstall.exe"
    # RMDir /r "$INSTDIR\theme"
@@ -140,22 +141,11 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall Minergift.lnk"
     RMDir "$SMPROGRAMS\$StartMenuFolder"
     Delete "$DESKTOP\Minergift.lnk"
+	Delete "$SMPROGRAMS\Startup\Minergift.lnk"
 
-    # remove the registry entires
-    ${If} $Checkbox_Reg_State == 1
-        DeleteRegKey HKCU "Software\Minergift"
-    ${EndIf}
-
-    # remove the user directory
-  #  ${If} $Checkbox_UserDir_State == 1
-  #  ${AndIf} $UserDir != ""
-  #  ${AndIf} ${FileExists} "$UserDir\*.*"
-  #      RMDir /r $UserDir
-  #  ${EndIf}
+    DeleteRegKey HKCU "Software\Minergift"
 
     # remove the uninstaller entry
     DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Minergift"
 
 SectionEnd
-
-

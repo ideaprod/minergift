@@ -38,7 +38,7 @@ FORMS += mainwindow.ui
 
 win32 {
     QMAKE_POST_LINK += "( if not exist $$shell_path($$OUT_PWD/../output/$$CONF) $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT} ) \
-                    & $$QMAKE_COPY debug\uiminergift.exe $${PROJECT_OUTPUT} "
+                    & $$QMAKE_COPY $${FOLDER}\uiminergift.exe $${PROJECT_OUTPUT} "
 }
 
 unix {

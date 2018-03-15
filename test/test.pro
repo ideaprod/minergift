@@ -18,7 +18,7 @@ LIBS += -L$$PROJECT_OUTPUT/ -lminergift
 SOURCES += tst_xmrigconnectortest.cpp
 
 win32 {
-    QMAKE_POST_LINK += $$QMAKE_COPY debug\testminergift.exe $${PROJECT_OUTPUT}
+    QMAKE_POST_LINK += $$QMAKE_COPY $${FOLDER}\testminergift.exe $${PROJECT_OUTPUT}
 }
 
 unix {
