@@ -9,3 +9,8 @@ build:
       - qmake minergift.pro -spec linux-g++
       - make
 
+test:
+   stage: test
+   script:
+      - cd output
+      - LD_LIBRARY_PATH=. ./testminergift
