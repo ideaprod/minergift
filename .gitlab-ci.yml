@@ -1,0 +1,8 @@
+image: gcc
+
+build:
+   stage: build
+   script:
+      - qmake minergift.pro -spec linux-g++
+      - make
+
