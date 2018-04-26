@@ -3,14 +3,26 @@ image: gcc
 variables:
    GIT_SUBMODULE_STRATEGY: recursive
 
-build:
+stages:
+   - build
+   - test
+
+mglib:
    stage: build
-   script:
-      - qmake minergift.pro -spec linux-g++
+   script:     
+      - qmake mglib/mglib.pro -spec linux-g++
       - make
 
-test:
+tests:
    stage: test
    script:
+      - qmake test/test.pro -spec linux-g++
+      - make
       - cd output
       - LD_LIBRARY_PATH=. ./testminergift
+
+ui:
+   stage: build
+   script:     
+      - qmake ui/ui.pro -spec linux-g++
+      - make
