@@ -18,7 +18,7 @@ tests:
    script:
       - qmake test/test.pro -spec linux-g++
       - make
-      - cd output
+      - cd ../output
       - LD_LIBRARY_PATH=. ./testminergift
 
 ui:
