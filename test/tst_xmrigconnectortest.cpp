@@ -113,6 +113,6 @@ void XmrigConnectorTest::test_getStatus_stopped()
     QCOMPARE(xmc->getStatus(), MinerApi::MinerStatus::STOPPED);
 }
 
-QTEST_MAIN(XmrigConnectorTest)
+QTEST_GUILESS_MAIN(XmrigConnectorTest)
 
 #include "tst_xmrigconnectortest.moc"

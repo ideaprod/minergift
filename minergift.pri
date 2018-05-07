@@ -1,8 +1,7 @@
 PROJECT_OUTPUT = $$shell_path($$OUT_PWD/../output)
 
-CONFIG(debug) {
+if (CONFIG(debug, debug|release)) {
     FOLDER = debug
-}
-CONFIG(release) {
+} else {
     FOLDER = release
 }
