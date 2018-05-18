@@ -87,6 +87,7 @@ Section
     File xmrig.exe
 #    File /r theme
 #    File /r images
+    File /r platforms
     File *.dll
     File minergift.ico
 #    File qt.conf
@@ -131,8 +132,8 @@ Section "Uninstall"
 	Delete "$INSTDIR\miner.json"
     Delete "$INSTDIR\minergift.ico"
     Delete "$INSTDIR\Uninstall.exe"
-   # RMDir /r "$INSTDIR\theme"
-   # RMDir /r "$INSTDIR\images"
+	Delete "$INSTDIR\platforms\*.dll"
+    RMDir /r "$INSTDIR\platforms"
     RMDir "$INSTDIR"
 
     # Remove shortcuts
