@@ -4,17 +4,17 @@ variables:
    GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-   - build
-   - test
+   - build_linux
+   - test_linux
 
 mglib:
-   stage: build
+   stage: build_linux
    script:     
       - qmake mglib/mglib.pro -spec linux-g++
       - make
 
 tests:
-   stage: test
+   stage: test_linux
    script:
       - qmake test/test.pro -spec linux-g++
       - make
@@ -22,7 +22,7 @@ tests:
       - LD_LIBRARY_PATH=. ./testminergift
 
 ui:
-   stage: build
+   stage: build_linux
    script:     
       - qmake ui/ui.pro -spec linux-g++
       - make
