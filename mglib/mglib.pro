@@ -28,15 +28,24 @@ win32 {
         XmrigConnector/CpuLimiter.h \
         XmrigConnector/CpuLimitationThread.h
 
-    QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
+    # CROSS COMPILE
+    !isEmpty(IS_LINUX){
+        QMAKE_POST_LINK += $$QMAKE_MKDIR $${PROJECT_OUTPUT} && $$QMAKE_COPY -P $${FOLDER}/minergift.dll \
+                    XmrigConnector/binary/xmrig.exe \
+		    XmrigConnector/libuv/libuv.dll \
+                    $${PROJECT_OUTPUT}
+    }
+    !isEmpty(IS_WIN){
+        QMAKE_PRE_LINK += "( if not exist xmrig $$QMAKE_MKDIR xmrig ) \
                     & cd xmrig \
-                    && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF \
+                    && cmake $$PWD/XmrigConnector/xmrig -G \"MinGW Makefiles\" -DUV_INCLUDE_DIR=\"C:/Program Files/libuv/include\" -DUV_LIBRARY=\"C:\Program Files\libuv\libuv.dll\" -DWITH_HTTPD=OFF\
                     && mingw32-make.exe -C $$OUT_PWD/xmrig"
 
-    QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \
+        QMAKE_POST_LINK += "( if not exist $${PROJECT_OUTPUT} $$QMAKE_MKDIR $${PROJECT_OUTPUT} ) \
                     & $$QMAKE_COPY $${FOLDER}\minergift.dll $${PROJECT_OUTPUT} \
                     && $$QMAKE_COPY xmrig\xmrig.exe $${PROJECT_OUTPUT} \
                     && $$QMAKE_COPY $$shell_path($$PWD/XmrigConnector/libuv/libuv.dll) $${PROJECT_OUTPUT} "
+	}
 }
 
 unix {

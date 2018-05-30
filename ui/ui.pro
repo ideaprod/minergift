@@ -37,8 +37,14 @@ HEADERS += \
 FORMS += mainwindow.ui
 
 win32 {
-    QMAKE_POST_LINK += "( if not exist $$shell_path($$OUT_PWD/../output/$$CONF) $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT} ) \
+	!isEmpty(IS_LINUX){
+               QMAKE_POST_LINK += "if [ ! -f $$shell_path($$OUT_PWD/../output/$$CONF) ]; then $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT}; fi \
+                && $$QMAKE_COPY $${FOLDER}/uiminergift.exe $${PROJECT_OUTPUT} "
+	}
+	!isEmpty(IS_WIN){
+               QMAKE_POST_LINK += "( if not exist $$shell_path($$OUT_PWD/../output/$$CONF) $$QMAKE_COPY $$shell_path($$PWD/$$CONF) $${PROJECT_OUTPUT} ) \
                     & $$QMAKE_COPY $${FOLDER}\uiminergift.exe $${PROJECT_OUTPUT} "
+	}
 }
 
 unix {
