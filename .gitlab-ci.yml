@@ -37,7 +37,7 @@ ui:linux:
 mglib:windows:
    stage: build
    script:
-      - echo todo
+      - ./packaging/windows/mingw-make.sh Qt5-64
    tags:
       - windows
 
