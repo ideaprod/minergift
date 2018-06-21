@@ -34,24 +34,10 @@ ui:linux:
    tags:
       - linux
       
-mglib:windows:
+minergift:windows:
    stage: build
    script:
       - ./packaging/windows/mingw-make.sh Qt5-64
-   tags:
-      - windows
-
-tests:windows:
-   stage: test
-   script:
-      - echo todo
-   tags:
-      - windows
-
-ui:windows:
-   stage: build
-   script:
-      - echo todo
    tags:
       - windows
 
