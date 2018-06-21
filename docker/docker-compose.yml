@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: ${GITLAB_HOSTNAME}
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "http://${GITLAB_HOSTNAME}"
+    # Traefik labels are suggested as an example for people using Traefik,
+    # remove them if you are using another reverse proxy.
+    labels:
+      traefik.backend: 'gitlab'
+      traefik.enable: 'true'
+      traefik.docker.network: 'web'
+      traefik.frontend.rule: "Host:${GITLAB_HOSTNAME}"
+      traefik.port: '80'
+    networks:
+      - web
+      - default
+    ports:
+      - '22:22'
+    volumes:
+      - './config:/etc/gitlab'
+      - './logs:/var/log/gitlab'
+      - './data:/var/opt/gitlab'
+  runner-linux:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-runner-linux
+    restart: always
+    networks:
+      - default
+    volumes:
+      - './runner-linux/config:/etc/gitlab-runner-linux'
+  runner-cross:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-runner-cross
+    restart: always
+    networks:
+      - default
+    volumes:
+      - './runner-cross/config:/etc/gitlab-runner-cross'
+networks:
+  web:
+    external: true

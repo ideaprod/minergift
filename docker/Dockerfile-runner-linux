@@ -1,0 +1,27 @@
+FROM debian:stretch
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y ca-certificates wget apt-transport-https vim nano && \
+    apt-get install -y git apt-utils curl build-essential qt5-default cmake libuv1-dev && \
+    curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash && \
+    apt-get install -y gitlab-runner && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+ARG DUMB_INIT_VERSION=1.2.1
+
+COPY entrypoint /
+
+RUN gitlab-runner --version && \
+    mkdir -p /etc/gitlab-runner/certs && \
+    chmod -R 700 /etc/gitlab-runner && \
+    wget -q https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64 -O /usr/bin/dumb-init && \
+    chmod +x /usr/bin/dumb-init && \
+    dumb-init --version && \
+    chmod +x /entrypoint
+
+VOLUME ["/etc/gitlab-runner-linux", "/home/gitlab-runner"]
+ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint"]
+CMD ["run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
+
