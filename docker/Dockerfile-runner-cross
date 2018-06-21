@@ -1,0 +1,28 @@
+FROM fedora:28
+
+RUN yum update -y && \
+    yum install -y git wget autoconf automake libtool \
+    mingw32-gcc mingw32-pkg-config mingw32-libxml2 mingw32-libxslt \
+    mingw32-glib2 mingw32-cairo mingw32-gtk2 mingw32-libtiff mingw32-pthreads \
+    mingw32-nsis mingw64-qt5-qmake cmake make \
+    libxml2-devel glibc-devel.i686 && \
+    curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | bash && \
+    yum install -y gitlab-runner && \
+    yum clean all
+
+ARG DUMB_INIT_VERSION=1.2.1
+
+COPY entrypoint /
+
+RUN gitlab-runner --version && \
+    mkdir -p /etc/gitlab-runner/certs && \
+    chmod -R 700 /etc/gitlab-runner && \ 
+    wget -q https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64 -O /usr/bin/dumb-init && \
+    chmod +x /usr/bin/dumb-init && \
+    dumb-init --version && \
+    chmod +x /entrypoint
+
+VOLUME ["/etc/gitlab-runner-cross", "/home/gitlab-runner"]
+ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint"]
+CMD ["run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
+

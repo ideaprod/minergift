@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/green-plain-play-button-icon-th.png</file>
+        <file>images/red-stop-button-plain-icon-th.png</file>
+        <file>images/gavel-297564_960_720.png</file>
+        <file>images/Flo.png</file>
+        <file>images/Tom.png</file>
+        <file>images/if_9-Cancel_2123880.png</file>
+        <file>images/if_15-Output_2123957.png</file>
+        <file>images/if_16-Input_2123951.png</file>
+    </qresource>
+</RCC>

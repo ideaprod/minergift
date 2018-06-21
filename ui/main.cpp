@@ -21,12 +21,16 @@ int main(int argc, char **argv)
     QCommandLineOption guiOption(QStringList() << "bg", "Running in background.");
     parser.addOption(guiOption);
 
+    // Prevent the app to close when trayed
+    QApplication::setQuitOnLastWindowClosed(false);
+
     // Process the actual command line arguments given by the user
     parser.process(application);
+
     MainWindow w;
     if (!parser.isSet(guiOption))
     {
-        w.show();
+        w.hide();
     }
     else
     {

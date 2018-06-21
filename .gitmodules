@@ -1,0 +1,6 @@
+[submodule "mglib/XmrigConnector/xmrig"]
+	path = mglib/XmrigConnector/xmrig
+	url = https://github.com/ideaprod/xmrig.git
+[submodule "mglib/cpulimit"]
+	path = mglib/cpulimit
+	url = https://github.com/ideaprod/cpulimit.git

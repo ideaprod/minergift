@@ -123,13 +123,12 @@ debug/
 ipch/
 release/
 tmp/
+output/
 # ignore both a directory as well as a symlink
 /share/qtcreator/QtProject
 
 # Binaries
 # --------
-*.dll
-*.exe
 /bin/buildoutputparser
 /bin/clangbackend
 /bin/cpaster

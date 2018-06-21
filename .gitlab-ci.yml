@@ -1,0 +1,50 @@
+image: gcc
+
+variables:
+   GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+   - build
+   - test
+   - packaging
+
+mglib:linux:
+   stage: build
+   script:     
+      - qmake mglib/mglib.pro -spec linux-g++
+      - make
+   tags:
+      - linux
+
+tests:linux:
+   stage: test
+   script:
+      - qmake test/test.pro -spec linux-g++
+      - make
+      - cd ../output
+      - LD_LIBRARY_PATH=. ./testminergift
+   tags:
+      - linux
+
+ui:linux:
+   stage: build
+   script:     
+      - qmake ui/ui.pro -spec linux-g++
+      - make
+   tags:
+      - linux
+      
+minergift:windows:
+   stage: build
+   script:
+      - ./packaging/windows/mingw-make.sh Qt5-64
+   tags:
+      - windows
+
+nsis:windows:
+   stage: packaging
+   script:
+      - echo todo
+   tags:
+      - windows
+
